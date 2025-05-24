@@ -1,27 +1,40 @@
 def next_values(x, y, z):
-    next_x = (85 - 6 * y + z) / 27
-    next_y = (72 - 6 * next_x - 2 * z) / 15
-    next_z = (110 - next_x - next_y) / 54
-    
-    return {
-        'x': next_x,
-        'y': next_y,
-        'z': next_z
-    }
+    next_x = (1 + y - z) / 3
+    next_y = (-3 * next_x - 2 * z) / 6
+    next_z = (4 - 3 * next_x - 3 * next_y) / 7
+    return [next_x, next_y, next_z]
+
+
+def display(i, places, x, y, z):
+    str = f"x{i} = {round(x,places)}\ty{i} = {(round(y,places))}\tz{i} = {round(z,places)}"
+    print(str)
+
+
+def isSame(places, x, y, z, next_x, next_y, next_z):
+    return (
+        round(x, places) == round(next_x, places)
+        and round(y, places) == round(next_y, places)
+        and round(z, places) == round(next_z, places)
+    )
+
 
 def main():
-    iterations = 10
-    x = 0
-    y = 0
-    z = 0
-    
-    for i in range(iterations):
-        print(f"x{i} = {x}, y{i} = {y}, z{i} = {z}")
+    decimal_places = 11
+    max_iterations = 20
+    x, y, z = 0, 0, 0
+    i = 0
+
+    for i in range(max_iterations):
+        display(i, decimal_places, x, y, z)
         next = next_values(x, y, z)
-        x = next['x']
-        y = next['y']
-        z = next['z']
-    
-    print(f"x{iterations} = {x}, y{iterations} = {y}, z{iterations} = {z}")
+
+        if isSame(decimal_places, x, y, z, next[0], next[1], next[2]):
+            print(f"\nSolved in {i + 1} iterations")
+            break
+
+        x, y, z = next
+
+    display(i + 1, decimal_places, x, y, z)
+
 
 main()
